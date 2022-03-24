@@ -1,0 +1,65 @@
+.Sections {
+	min-height: calc(100vh - 177px);
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.Sections h2 {
+	width: 100%;
+	height: 100px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-family: "Roboto";
+	font-style: normal;
+	font-weight: 400;
+	font-size: 24px;
+	line-height: 28px;
+	color: #293845;
+}
+
+.Sections main {
+	display: flex;
+	flex-direction: column;
+	gap: 50px;
+	width: 90%;
+	margin-bottom: 137px;
+}
+
+.Sections main .section {
+	width: 100%;
+	height: 80px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.Sections main .section p {
+	font-family: "Roboto";
+	font-style: normal;
+	font-weight: 400;
+	font-size: 20px;
+	color: #293845;
+}
+
+.Sections main .section .showtimes {
+	width: 100%;
+	display: flex;
+	gap: 8px;
+}
+
+.Sections main .section .showtimes button {
+	cursor: pointer;
+	width: 83px;
+	height: 43px;
+	background-color: #e8833a;
+	border-radius: 3px;
+	color: #ffffff;
+	font-size: 18px;
+	font-family: "Roboto";
+	font-style: normal;
+	font-weight: 400;
+	border: none;
+}
