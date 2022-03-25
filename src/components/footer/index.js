@@ -1,7 +1,7 @@
 import "./style.css";
 
 function Footer(props) {
-	const { title, url, weekday, date, style } = props;
+	const { title, url, weekday, time, style } = props;
 	return (
 		<div className="Footer">
 			<footer>
@@ -11,7 +11,7 @@ function Footer(props) {
 				<span>
 					<p>{title}</p>
 					<p className={style}>
-						{weekday} - {date}
+						{weekday} - {time}
 					</p>
 				</span>
 			</footer>

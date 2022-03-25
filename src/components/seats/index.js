@@ -10,8 +10,12 @@ function Seats() {
 		{ bgColor: "#C3CFD9", status: "Disponível" },
 		{ bgColor: "#FBE192", status: "Indisponível" },
 	];
+	const [selected, setSelected] = useState([]);
+	const [movieInfo, setMovieInfo] = useState({});
 	const [seats, setSeats] = useState([]);
 	const { idSessao } = useParams();
+
+	console.log(selected);
 
 	useEffect(() => {
 		const promise = axios.get(
@@ -20,11 +24,24 @@ function Seats() {
 		promise.then((response) => {
 			console.log(response);
 			const {
-				data: { day, movie, seats },
+				data: {
+					day: { weekday },
+					movie: { title, posterURL },
+					seats,
+					name,
+				},
 			} = response;
 			setSeats(seats);
+			setMovieInfo({
+				weekday: weekday,
+				title: title,
+				posterURL: posterURL,
+				name: name,
+			});
 		});
 	}, []);
+
+	console.log(movieInfo.posterURL);
 
 	return (
 		<Container>
@@ -33,7 +50,16 @@ function Seats() {
 				{seats.map((seat) => {
 					const { id, name, isAvailable } = seat;
 					return (
-						<Seat isAvailable={isAvailable}>
+						<Seat
+							onClick={() => {
+								if (isAvailable && !selected.some((number) => number === id)) {
+									setSelected([...selected, id]);
+								}
+							}}
+							isAvailable={isAvailable}
+							id={id}
+							selected={selected}
+						>
 							<span>{name}</span>
 						</Seat>
 					);
@@ -50,19 +76,30 @@ function Seats() {
 					);
 				})}
 			</Labels>
-			<Input>
-				<span>Nome do Comprador:</span>
-				<input type="text" placeholder="Digite seu nome..."></input>
-			</Input>
-			<Input>
-				<span>CPF do Comprador:</span>
-				<input
-					type="text"
-					minLength="11"
-					maxLength="11"
-					placeholder="Digite seu CPF"
-				></input>
-			</Input>
+			<form>
+				<Input>
+					<span>Nome do Comprador:</span>
+					<input type="text" placeholder="Digite seu nome..."></input>
+				</Input>
+				<Input>
+					<span>CPF do Comprador:</span>
+					<input
+						type="text"
+						maxLength={11}
+						minLength={11}
+						pattern="[0-9]{11}"
+						placeholder="Digite seu CPF"
+					></input>
+				</Input>
+				<button type="submit">Reservar Assento(s)</button>
+			</form>
+			<Footer
+				time={movieInfo.name}
+				weekday={movieInfo.weekday}
+				title={movieInfo.title}
+				url={movieInfo.posterURL}
+				style="show"
+			></Footer>
 		</Container>
 	);
 }
@@ -73,6 +110,28 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	form {
+		width: 90%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 20px;
+		margin-bottom: 137px;
+	}
+
+	form button {
+		margin-top: 25px;
+		width: 225px;
+		height: 42px;
+		background-color: #e8833a;
+		border-radius: 3px;
+		border: none;
+		color: #ffffff;
+		font-family: "Roboto";
+		font-style: normal;
+		font-weight: 400;
+		font-size: 18px;
+	}
 `;
 
 const SeatsContainer = styled.div`
@@ -90,8 +149,21 @@ const Seat = styled.div`
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
-	background-color: ${(props) =>
-		props.isAvailable === true ? "#C3CFD9" : "#FBE192;"};
+	background-color: ${(props) => {
+		if (
+			props.isAvailable === true &&
+			props.selected.some((id) => id === props.id)
+		) {
+			return "#8DD7CF;";
+		} else if (props.isAvailable === true) {
+			return "#C3CFD9;";
+		} else {
+			return "#FBE192;";
+		}
+	}}
+		
+	pointer-events: ${(props) => (props.isAvailable === true ? "auto" : "none")}
+	
 	border: 1px solid #808f9d;
 	border-radius: 12px;
 
@@ -123,6 +195,8 @@ const Labels = styled.div`
 	height: 50px;
 	display: flex;
 	justify-content: space-around;
+	margin-bottom: 45px;
+	margin-top: 10px;
 
 	div {
 		display: flex;
@@ -149,7 +223,7 @@ const Circle = styled.div`
 `;
 
 const Input = styled.div`
-	width: 90%;
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 
