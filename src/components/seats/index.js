@@ -157,11 +157,11 @@ const Container = styled.div`
 		flex-direction: column;
 		align-items: center;
 		gap: 20px;
-		margin-bottom: 137px;
+		margin-bottom: 117px;
 	}
 
 	form button {
-		margin-top: 25px;
+		margin-top: 15px;
 		width: 225px;
 		height: 42px;
 		background-color: #e8833a;
@@ -184,8 +184,8 @@ const SeatsContainer = styled.div`
 `;
 
 const Seat = styled.div`
-	width: 26px;
-	height: 26px;
+	width: 28px;
+	height: 28px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
