@@ -6,7 +6,7 @@ function Footer(props) {
 		<div className="Footer">
 			<footer>
 				<div>
-					<img src={url}></img>
+					<img src={url} alt={title}></img>
 				</div>
 				<span>
 					<p>{title}</p>

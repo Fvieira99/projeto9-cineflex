@@ -18,7 +18,6 @@ function Sections() {
 			const {
 				data: { title, days, posterURL },
 			} = response;
-			console.log(days);
 			setSections(days);
 			setInfo({ title: title, url: posterURL });
 		});
@@ -28,18 +27,18 @@ function Sections() {
 		<div className="Sections">
 			<h2>Selecione a sessão</h2>
 			<main>
-				{sections.map((section) => {
+				{sections.map((section, index) => {
 					const { weekday, date, showtimes } = section;
 					return (
-						<div className="section">
+						<div key={index} className="section">
 							<p>
 								{weekday} - {date}
 							</p>
 							<div className="showtimes">
-								{showtimes.map((showtime) => {
+								{showtimes.map((showtime, index) => {
 									const { name, id } = showtime;
 									return (
-										<Link to={`/assentos/${id}`}>
+										<Link key={index} to={`/assentos/${id}`}>
 											<button>{name}</button>
 										</Link>
 									);

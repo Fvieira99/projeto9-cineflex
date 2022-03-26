@@ -22,11 +22,11 @@ function Home() {
 			<h2>Selecione o filme</h2>
 			<main>
 				{films.map((film) => {
-					const { posterURL, id } = film;
+					const { posterURL, id, title } = film;
 					return (
 						<Link key={id} to={`/sessoes/${id}`}>
 							<div className="film">
-								<img src={posterURL}></img>
+								<img src={posterURL} alt={title}></img>
 							</div>
 						</Link>
 					);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Footer from "../footer";
 import styled from "styled-components";
@@ -10,12 +10,15 @@ function Seats() {
 		{ bgColor: "#C3CFD9", status: "Disponível" },
 		{ bgColor: "#FBE192", status: "Indisponível" },
 	];
+
+	const [bookingName, setBookingName] = useState("");
+	const [bookingCPF, setBookingCPF] = useState("");
 	const [selected, setSelected] = useState([]);
 	const [movieInfo, setMovieInfo] = useState({});
 	const [seats, setSeats] = useState([]);
 	const { idSessao } = useParams();
 
-	console.log(selected);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const promise = axios.get(
@@ -25,7 +28,7 @@ function Seats() {
 			console.log(response);
 			const {
 				data: {
-					day: { weekday },
+					day: { weekday, date },
 					movie: { title, posterURL },
 					seats,
 					name,
@@ -33,6 +36,7 @@ function Seats() {
 			} = response;
 			setSeats(seats);
 			setMovieInfo({
+				date: date,
 				weekday: weekday,
 				title: title,
 				posterURL: posterURL,
@@ -41,16 +45,44 @@ function Seats() {
 		});
 	}, []);
 
-	console.log(movieInfo.posterURL);
+	function submitInfo(e) {
+		e.preventDefault();
+		const promise = axios.post(
+			"https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many",
+			{
+				ids: selected,
+				name: bookingName,
+				cpf: bookingCPF,
+			}
+		);
 
+		promise.then((response) => {
+			console.log(response);
+			navigate("/sucesso", {
+				state: {
+					id: selected,
+					name: bookingName,
+					cpf: bookingCPF,
+					date: movieInfo.date,
+					title: movieInfo.title,
+					time: movieInfo.name,
+				},
+			});
+			setBookingName("");
+			setBookingCPF("");
+		});
+
+		promise.catch((err) => console.log(err));
+	}
 	return (
 		<Container>
 			<Title>Selecione o(s) assento(s)</Title>
 			<SeatsContainer>
-				{seats.map((seat) => {
+				{seats.map((seat, index) => {
 					const { id, name, isAvailable } = seat;
 					return (
 						<Seat
+							key={index}
 							onClick={() => {
 								if (isAvailable && !selected.some((number) => number === id)) {
 									setSelected([...selected, id]);
@@ -66,24 +98,33 @@ function Seats() {
 				})}
 			</SeatsContainer>
 			<Labels>
-				{labelInfo.map((label) => {
+				{labelInfo.map((label, index) => {
 					const { bgColor, status } = label;
 					return (
-						<div>
+						<div key={index}>
 							<Circle bgColor={bgColor}></Circle>
 							<span>{status}</span>
 						</div>
 					);
 				})}
 			</Labels>
-			<form>
+			<form onSubmit={submitInfo}>
 				<Input>
 					<span>Nome do Comprador:</span>
-					<input type="text" placeholder="Digite seu nome..."></input>
+					<input
+						onChange={(e) => {
+							setBookingName(e.target.value);
+						}}
+						type="text"
+						placeholder="Digite seu nome..."
+					></input>
 				</Input>
 				<Input>
 					<span>CPF do Comprador:</span>
 					<input
+						onChange={(e) => {
+							setBookingCPF(e.target.value);
+						}}
 						type="text"
 						maxLength={11}
 						minLength={11}
