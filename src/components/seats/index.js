@@ -102,7 +102,7 @@ function Seats() {
 					const { bgColor, status } = label;
 					return (
 						<div key={index}>
-							<Circle bgColor={bgColor}></Circle>
+							<LabelCircle bgColor={bgColor}></LabelCircle>
 							<span>{status}</span>
 						</div>
 					);
@@ -151,6 +151,7 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	margin-bottom: 30px;
 	form {
 		width: 90%;
 		display: flex;
@@ -178,14 +179,15 @@ const Container = styled.div`
 const SeatsContainer = styled.div`
 	width: 90%;
 	height: 250px;
-	gap: 10px;
+	gap: 7px;
 	display: flex;
+	justify-content: center;
 	flex-wrap: wrap;
 `;
 
 const Seat = styled.div`
-	width: 28px;
-	height: 28px;
+	width: 26px;
+	height: 26px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -255,7 +257,7 @@ const Labels = styled.div`
 	}
 `;
 
-const Circle = styled.div`
+const LabelCircle = styled.div`
 	width: 26px;
 	height: 26px;
 	background-color: ${(props) => props.bgColor};

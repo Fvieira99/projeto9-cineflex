@@ -21,8 +21,9 @@
 }
 
 .Home main {
-	width: 80%;
+	width: 90%;
 	display: flex;
+	justify-content: center;
 	gap: 30px;
 	flex-wrap: wrap;
 }
