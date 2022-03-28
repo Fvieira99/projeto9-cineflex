@@ -58,7 +58,7 @@ const Container = styled.div`
 
 	button {
 		cursor: pointer;
-		margin-top: 100px;
+		margin-top: 20px;
 		width: 225px;
 		height: 42px;
 		background-color: #e8833a;
